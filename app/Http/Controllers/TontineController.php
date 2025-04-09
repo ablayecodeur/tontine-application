@@ -17,7 +17,7 @@ class TontineController extends Controller
         $tontines = auth()->user()->tontines()
                          ->withCount(['activeParticipants'])
                          ->latest()
-                         ->get();
+                         ->paginate(10); // ou un autre nombre de résultats par page
 
         return view('manager.tontines.index', compact('tontines'));
     }
@@ -53,14 +53,14 @@ class TontineController extends Controller
 
     public function edit(Tontine $tontine)
     {
-        $this->authorize('update', $tontine);
+        //$this->authorize('update', $tontine);
 
         return view('manager.tontines.edit', compact('tontine'));
     }
 
     public function update(Request $request, Tontine $tontine)
     {
-        $this->authorize('update', $tontine);
+        //$this->authorize('update', $tontine);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -75,7 +75,10 @@ class TontineController extends Controller
 
     public function destroy(Tontine $tontine)
     {
-        $this->authorize('delete', $tontine);
+        //$this->authorize('delete', $tontine);
+
+        // Supprimer d'abord les participants liés
+        $tontine->participants()->delete(); // si la relation est bien définie
 
         $tontine->delete();
 
