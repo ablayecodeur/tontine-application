@@ -26,9 +26,10 @@ class Participant extends Model
         return $this->belongsTo(Tontine::class);
     }
 
-    public function payments()
+        // Changez la relation payments() en payment()
+    public function payment()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasOne(Payment::class);
     }
 
     public function rounds()

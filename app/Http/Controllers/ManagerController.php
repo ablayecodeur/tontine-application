@@ -86,28 +86,36 @@ class ManagerController extends Controller
 
         // app/Http/Controllers/ManagerController.php
 
-    public function approveParticipant(Participant $participant)
-    {
-        // Vérification que l'utilisateur est bien le gérant de la tontine
-        if ($participant->tontine->manager_id !== auth()->id()) {
-            abort(403, 'Vous n\'êtes pas autorisé à effectuer cette action');
+        public function approveParticipant(Participant $participant)
+        {
+            // Vérification des droits
+            if ($participant->tontine->manager_id !== auth()->id()) {
+                abort(403, 'Action non autorisée');
+            }
+
+            // Mise à jour du participant
+            $participant->update(['status' => 'active']); // Utilisez 'approved' au lieu de 'active'
+
+            // Mise à jour ou création du paiement
+            $payment = $participant->payment()->firstOrNew();
+            $payment->fill([
+                'status' => 'verified',
+                'verified_by' => auth()->id(),
+                'verified_at' => now()
+            ])->save();
+
+            // Notification
+            Notification::create([
+                'user_id' => $participant->user_id,
+                'type' => 'participation_approved',
+                'title' => 'Participation approuvée',
+                'message' => 'Votre participation à "'.$participant->tontine->name.'" a été approuvée',
+                'notifiable_id' => $participant->id,
+                'notifiable_type' => Participant::class
+            ]);
+
+            return back()->with('success', 'Participant approuvé');
         }
-
-        // Mise à jour du statut du participant
-        $participant->update(['status' => 'active']);
-
-        // Création d'une notification pour le participant
-        Notification::create([
-            'user_id' => $participant->user_id,
-            'type' => 'participation_approved',
-            'title' => 'title',
-            'message' => 'Votre participation à la tontine "'.$participant->tontine->name.'" a été approuvée',
-            'notifiable_id' => $participant->id,
-            'notifiable_type' => Participant::class
-        ]);
-
-        return back()->with('success', 'Participant approuvé avec succès');
-    }
 
     // app/Http/Controllers/ManagerController.php
 

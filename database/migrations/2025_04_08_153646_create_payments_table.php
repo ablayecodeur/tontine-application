@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('participant_id')->constrained();
             $table->decimal('amount', 10, 2);
-            $table->enum('method', ['cash', 'mobile_money', 'bank_transfer', 'card']);
+            $table->enum('method', ['Wave', 'Orange Money', 'Espèces']);
             $table->string('transaction_reference')->nullable();
             $table->enum('status', ['pending', 'verified', 'rejected'])->default('pending');
             $table->dateTime('payment_date')->default(now());

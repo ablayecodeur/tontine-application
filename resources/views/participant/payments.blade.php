@@ -28,10 +28,10 @@
                                 <td class="py-2 px-4 border-b border-gray-200">{{ $payment->participant->tontine->name }}</td>
                                 <td class="py-2 px-4 border-b border-gray-200">{{ number_format($payment->amount, 2) }} FCFA</td>
                                 <td class="py-2 px-4 border-b border-gray-200">
-                                    @if($payment->method === 'wave')
+                                    @if($payment->method === 'Wave')
                                         Wave
-                                    @elseif($payment->method === 'orange_money')
-                                        Orange Money
+                                    @elseif($payment->method === 'Orange Money')
+                                    mobile_money
                                     @else
                                         Espèces
                                     @endif
@@ -39,7 +39,11 @@
                                 <td class="py-2 px-4 border-b border-gray-200">
                                     <span class="px-2 py-1 text-xs rounded-full
                                         {{ $payment->status === 'verified' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                        {{ $payment->status === 'verified' ? 'Validé' : 'En attente' }}
+                                        @if($payment->status === 'verified')
+                                            Validé par {{ $payment->verifier->name ?? 'Admin' }}
+                                        @else
+                                            En attente
+                                        @endif
                                     </span>
                                 </td>
                                 <td class="py-2 px-4 border-b border-gray-200">{{ $payment->created_at->format('d/m/Y H:i') }}</td>

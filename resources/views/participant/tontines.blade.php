@@ -45,9 +45,9 @@
                                         <label class="block text-gray-700 text-sm font-bold mb-2">Méthode de paiement</label>
                                         <select name="payment_method" class="form-select w-full" required>
                                             <option value="">Choisir...</option>
-                                            <option value="wave">Wave</option>
-                                            <option value="orange_money">Orange Money</option>
-                                            <option value="cash">Espèces</option>
+                                            <option value="Wave">Wave</option>
+                                            <option value="Orange Money">Orange Money</option>
+                                            <option value="Espèces">Espèces</option>
                                         </select>
                                     </div>
 
@@ -77,7 +77,7 @@
         paymentMethodSelects.forEach(select => {
             select.addEventListener('change', function() {
                 const transactionField = this.closest('form').querySelector('#transaction-number-field');
-                if (this.value === 'wave' || this.value === 'orange_money') {
+                if (this.value === 'Wave' || this.value === 'Orange Money') {
                     transactionField.style.display = 'block';
                     transactionField.querySelector('input').setAttribute('required', 'required');
                 } else {

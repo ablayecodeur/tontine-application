@@ -40,8 +40,8 @@ class ParticipantController extends Controller
     {
         $request->validate([
             'tontine_id' => 'required|exists:tontines,id',
-            'payment_method' => 'required|in:wave,orange_money,cash',
-            'transaction_number' => 'required_if:payment_method,wave,orange_money'
+            'payment_method' => 'required|in:Wave,Orange Money,Espèces', // Correspond à la migration
+            'transaction_number' => 'required_if:payment_method,Wave,Orange Money' // Nom de colonne correct
         ]);
 
         $tontine = Tontine::findOrFail($request->tontine_id);
@@ -52,11 +52,11 @@ class ParticipantController extends Controller
             'status' => 'pending'
         ]);
 
-        if ($request->payment_method !== 'cash') {
+        if ($request->payment_method !== 'Espèces') {
             Payment::create([
                 'participant_id' => $participant->id,
                 'method' => $request->payment_method,
-                'transaction_number' => $request->transaction_number,
+                'transaction_number' => $request->transaction_reference, // Nom de colonne correct
                 'amount' => $tontine->amount_per_participant,
                 'status' => 'pending'
             ]);
@@ -65,6 +65,7 @@ class ParticipantController extends Controller
         // Notification au gérant
         Notification::create([
             'user_id' => $tontine->manager_id,
+            'title' => 'Nouvelle demande de participation',
             'type' => 'participation_request',
             'message' => 'Nouvelle demande de participation à votre tontine: '.$tontine->name,
             'notifiable_id' => $participant->id,
