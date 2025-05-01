@@ -17,7 +17,8 @@ class Tontine extends Model
         'frequency',
         'start_date',
         'end_date',
-        'status'
+        'status',
+        'current_winner_id'
     ];
 
     protected $casts = [
