@@ -84,28 +84,6 @@
     <!-- Tontines disponibles -->
     @if($availableTontines->count() > 0)
     <div class="bg-white rounded-lg shadow overflow-hidden mb-8">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-800">Tontines disponibles</h2>
-        </div>
-        <div class="divide-y divide-gray-200">
-            @foreach($availableTontines as $tontine)
-            <div class="px-6 py-4 hover:bg-gray-50">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h3 class="font-medium text-gray-800">{{ $tontine->name }}</h3>
-                        <p class="text-sm text-gray-600">
-                            {{ $tontine->amount_per_participant }} FCFA par participant |
-                            {{ $tontine->activeParticipants()->count() }} participants
-                        </p>
-                    </div>
-                    <a href="{{ route('participant.tontines.join', $tontine) }}"
-                       class="px-4 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700">
-                        Rejoindre
-                    </a>
-                </div>
-            </div>
-            @endforeach
-        </div>
     </div>
     @endif
 </div>

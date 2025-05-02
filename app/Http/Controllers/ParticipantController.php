@@ -90,4 +90,6 @@ class ParticipantController extends Controller
         return redirect()->route('participant.dashboard')
             ->with('success', 'Demande de participation envoyée!');
     }
+
+
 }

@@ -14,42 +14,41 @@
         </div>
 
         <div class="p-6">
-            <form method="POST"
-                  action="{{ isset($tontine) ? route('manager.participants.store', ['tontine_id' => $tontine->id]) : route('manager.participants.store') }}">
+            <form method="POST" action="{{ isset($tontine) ? route('manager.participants.store', ['tontine_id' => $tontine->id]) : route('manager.participants.store') }}">
                 @csrf
 
-                @if(!isset($tontine))
-                <div class="mb-4">
-                    <label for="tontine_id" class="block text-gray-700 text-sm font-bold mb-2">Tontine</label>
-                    <select id="tontine_id" name="tontine_id" class="form-select w-full" required>
-                        <option value="">Sélectionner une tontine</option>
-                        @foreach(auth()->user()->tontines as $t)
-                            <option value="{{ $t->id }}">{{ $t->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                @if(isset($tontine))
+                    <div class="mb-4">
+                        <label for="tontine_id" class="block text-gray-700 text-sm font-bold mb-2">Tontine</label>
+                        <select id="tontine_id" name="tontine_id" class="w-full border border-gray-300 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <option value="">Sélectionner une tontine</option>
+                            @foreach(auth()->user()->tontines as $t)
+                                <option value="{{ $t->id }}">{{ $t->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 @endif
 
                 <div class="mb-4">
                     <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nom complet</label>
-                    <input id="name" type="text" class="form-input w-full" name="name" required>
+                    <input id="name" type="text" class="w-full border border-gray-300 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="name" required>
                 </div>
 
                 <div class="mb-4">
                     <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input id="email" type="email" class="form-input w-full" name="email">
+                    <input id="email" type="email" class="w-full border border-gray-300 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="email">
                 </div>
 
                 <div class="mb-4">
                     <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Téléphone</label>
-                    <input id="phone" type="text" class="form-input w-full" name="phone" required>
+                    <input id="phone" type="text" class="w-full border border-gray-300 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="phone" required>
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Méthode de paiement</label>
                     <div class="flex items-center space-x-4">
                         <label class="inline-flex items-center">
-                            <input type="radio" class="form-radio" name="payment_method" value="cash" checked>
+                            <input type="radio" class="form-radio text-blue-600" name="payment_method" value="cash" checked>
                             <span class="ml-2">Espèces</span>
                         </label>
                     </div>

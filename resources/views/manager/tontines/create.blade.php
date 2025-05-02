@@ -14,7 +14,8 @@
 
                     <div class="mb-4">
                         <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nom de la tontine</label>
-                        <input id="name" type="text" class="form-input w-full @error('name') border-red-500 @enderror"
+                        <input id="name" type="text"
+                               class="w-full border border-gray-300 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('name') border-red-500 @enderror"
                                name="name" value="{{ old('name') }}" required>
                         @error('name')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
@@ -26,7 +27,7 @@
                             Montant par participant (FCFA)
                         </label>
                         <input id="amount_per_participant" type="number" step="0.01"
-                               class="form-input w-full @error('amount_per_participant') border-red-500 @enderror"
+                               class="w-full border border-gray-300 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('amount_per_participant') border-red-500 @enderror"
                                name="amount_per_participant" value="{{ old('amount_per_participant') }}" required>
                         @error('amount_per_participant')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
@@ -38,7 +39,7 @@
                             Nombre maximum de participants
                         </label>
                         <input id="max_participants" type="number"
-                               class="form-input w-full @error('max_participants') border-red-500 @enderror"
+                               class="w-full border border-gray-300 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('max_participants') border-red-500 @enderror"
                                name="max_participants" value="{{ old('max_participants') }}" required min="2">
                         @error('max_participants')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
@@ -50,7 +51,7 @@
                             Date de début de la tontine
                         </label>
                         <input id="start_date" type="date"
-                               class="form-input w-full @error('start_date') border-red-500 @enderror"
+                               class="w-full border border-gray-300 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('start_date') border-red-500 @enderror"
                                name="start_date" value="{{ old('start_date') }}" required>
                         @error('start_date')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
