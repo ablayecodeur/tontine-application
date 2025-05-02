@@ -9,6 +9,7 @@ use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\TontineController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\HomeController;
 use App\Models\User;
 use App\Models\Tontine;
 use App\Models\Participant;
@@ -26,9 +27,8 @@ use Illuminate\Support\Str;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'accueil'])->name('accueil');
 
 // Routes d'authentification
 Route::middleware('guest')->group(function () {
