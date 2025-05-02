@@ -13,14 +13,29 @@ class ParticipantController extends Controller
     public function dashboard()
     {
         $user = auth()->user();
-        $participations = $user->participations()->with('tontine')->get();
-        $tontines = Tontine::whereDoesntHave('participants', function($query) use ($user) {
+
+        // Statistiques à afficher
+        $stats = [
+            'my_tontines_count' => $user->participations()->count(),
+            'payments_made' => Payment::whereHas('participant', function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })->where('status', 'verified')->count(),
+            'pending_payments' => Payment::whereHas('participant', function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })->where('status', 'pending')->count(),
+            'total_amount' => Payment::whereHas('participant', function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })->where('status', 'verified')->sum('amount')
+        ];
+
+        // Tontines disponibles (où l'utilisateur ne participe pas encore)
+        $availableTontines = Tontine::whereDoesntHave('participants', function($query) use ($user) {
             $query->where('user_id', $user->id);
         })->get();
 
         return view('participant.dashboard', [
-            'participations' => $participations,
-            'tontines' => $tontines,
+            'stats' => $stats,
+            'availableTontines' => $availableTontines,
             'unreadNotifications' => $user->unreadNotifications()->count()
         ]);
     }

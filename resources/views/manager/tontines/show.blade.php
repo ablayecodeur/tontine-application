@@ -36,8 +36,8 @@
                 <div>
                     <h2 class="text-lg font-semibold mb-2">Actions</h2>
                     <div class="space-y-2">
-                        <a href="{{ route('manager.tontines.draw', $tontine) }}"
-                           class="block bg-green-600 text-white px-4 py-2 rounded text-center hover:bg-green-700">
+                         <a href="{{ route('manager.tontines.draw', $tontine) }}"
+                            class="block bg-green-600 text-white px-4 py-2 rounded text-center hover:bg-green-700">
                             Effectuer un tirage
                         </a>
                         <a href="{{ route('manager.participants.create', ['tontine_id' => $tontine->id]) }}"

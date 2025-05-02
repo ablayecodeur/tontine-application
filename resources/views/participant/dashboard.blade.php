@@ -1,97 +1,112 @@
-<!-- resources/views/participant/dashboard.blade.php -->
 @extends('layouts.app')
 
 @section('content')
-<!-- Header Navigation Participant -->
-<header class="bg-white shadow-sm mb-6">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16">
-      <div class="flex space-x-8">
-        <!-- Logo / Accueil -->
-        <a href="{{ route('participant.dashboard') }}" class="flex items-center text-green-600 font-bold">
-          <svg class="h-6 w-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-          </svg>
-          TontineParticipant
-        </a>
+<div class="container mx-auto px-4 py-6">
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-800">Tableau de bord Participant</h1>
+        <p class="text-gray-600">Bienvenue, {{ auth()->user()->name }}</p>
 
-        <!-- Liens Principaux -->
-        <nav class="hidden sm:flex space-x-8">
-          <a href="{{ route('participant.tontines') }}"
-             class="inline-flex items-center px-1 pt-1 border-b-2 border-green-500 text-sm font-medium text-gray-900">
-            Tontines disponibles
-          </a>
-          <a href="{{ route('participant.payments') }}"
-             class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium text-gray-500 hover:text-gray-700">
-            Mes Paiements
-          </a>
-          <a href="{{ route('notifications') }}"
-             class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium text-gray-500 hover:text-gray-700 relative">
-            Alertes
-            @if(auth()->user()->unreadNotifications->count() > 0)
-              <span class="absolute -top-1 -right-4 inline-block w-5 h-5 bg-red-600 text-white text-xs rounded-full flex items-center justify-center">
-                {{ auth()->user()->unreadNotifications->count() }}
-              </span>
-            @endif
-          </a>
-        </nav>
-      </div>
-
-      <!-- Menu utilisateur -->
-      <div class="hidden sm:ml-6 sm:flex sm:items-center">
-        <div class="relative">
-          <button class="flex items-center text-sm rounded-full focus:outline-none group">
-            <span class="mr-3 text-sm text-gray-700 group-hover:text-green-600">
-              {{ Auth::user()->name }}
-            </span>
-            <div class="relative">
-              <svg class="h-8 w-8 rounded-full bg-green-100 text-green-600 p-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </div>
-          </button>
-
-          <!-- Dropdown menu -->
-          <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 hidden" style="z-index: 1000;">
-            <form method="POST" action="{{ route('logout') }}">
-              @csrf
-              <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600">
-                <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                Déconnexion
-              </button>
-            </form>
-          </div>
+        @if($unreadNotifications > 0)
+        <div class="mt-2">
+            <a href="{{ route('notifications') }}" class="text-blue-600 hover:text-blue-800 flex items-center">
+                <span class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center mr-2">
+                    {{ $unreadNotifications }}
+                </span>
+                Nouvelle(s) notification(s)
+            </a>
         </div>
-      </div>
+        @endif
     </div>
-  </div>
-</header>
 
-<!-- Contenu principal -->
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-  @include('shared.notifications')
+    <!-- Statistiques -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Mes Tontines -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Mes Tontines</p>
+                    <p class="text-2xl font-semibold text-gray-800">{{ $stats['my_tontines_count'] }}</p>
+                </div>
+            </div>
+        </div>
 
-  @yield('participant-content') <!-- Section pour le contenu spécifique -->
-</main>
+        <!-- Paiements validés -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Paiements validés</p>
+                    <p class="text-2xl font-semibold text-gray-800">{{ $stats['payments_made'] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paiements en attente -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mr-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Paiements en attente</p>
+                    <p class="text-2xl font-semibold text-gray-800">{{ $stats['pending_payments'] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Montant total -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Total investi</p>
+                    <p class="text-2xl font-semibold text-gray-800">{{ number_format($stats['total_amount'], 2) }} FCFA</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tontines disponibles -->
+    @if($availableTontines->count() > 0)
+    <div class="bg-white rounded-lg shadow overflow-hidden mb-8">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800">Tontines disponibles</h2>
+        </div>
+        <div class="divide-y divide-gray-200">
+            @foreach($availableTontines as $tontine)
+            <div class="px-6 py-4 hover:bg-gray-50">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-medium text-gray-800">{{ $tontine->name }}</h3>
+                        <p class="text-sm text-gray-600">
+                            {{ $tontine->amount_per_participant }} FCFA par participant |
+                            {{ $tontine->activeParticipants()->count() }} participants
+                        </p>
+                    </div>
+                    <a href="{{ route('participant.tontines.join', $tontine) }}"
+                       class="px-4 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700">
+                        Rejoindre
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+</div>
 @endsection
-
-@push('scripts')
-<script>
-// Gestion du menu dropdown
-document.addEventListener('DOMContentLoaded', function() {
-  const profileButton = document.querySelector('header button');
-  const dropdownMenu = document.querySelector('header .relative + .hidden');
-
-  profileButton.addEventListener('click', function(e) {
-    e.stopPropagation();
-    dropdownMenu.classList.toggle('hidden');
-  });
-
-  document.addEventListener('click', function() {
-    dropdownMenu.classList.add('hidden');
-  });
-});
-</script>
-@endpush

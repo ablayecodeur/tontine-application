@@ -28,7 +28,7 @@
                     </ul>
                 </div>
 
-                <form method="POST" action="{{ route('manager.tontines.draw', $tontine) }}">
+                <form method="POST" action="{{ route('manager.tontines.perform-draw', $tontine) }}">
                     @csrf
                     <div class="flex items-center justify-end space-x-4">
                         <a href="{{ route('manager.tontines.show', $tontine) }}"

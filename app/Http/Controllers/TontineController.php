@@ -88,7 +88,7 @@ class TontineController extends Controller
 
     public function drawWinner(Tontine $tontine)
     {
-        $this->authorize('draw', $tontine);
+       // $this->authorize('draw', $tontine);
 
         $activeParticipants = $tontine->activeParticipants()->get();
 
@@ -106,6 +106,7 @@ class TontineController extends Controller
 
             Notification::create([
                 'user_id' => $participant->user_id,
+                'title' => 'Résultat du tirage', // Ajout du titre requis
                 'type' => 'draw_result',
                 'message' => $message,
                 'notifiable_id' => $tontine->id,
@@ -121,35 +122,41 @@ class TontineController extends Controller
 
      // app/Http/Controllers/TontineController.php
 
-     public function draw(Tontine $tontine)
+     public function performDraw(Tontine $tontine)
      {
-         // Vérifiez que l'utilisateur est bien le gérant de cette tontine
+         // Vérifier que l'utilisateur est le gestionnaire
          if ($tontine->manager_id !== auth()->id()) {
              abort(403);
          }
 
-         // Vérifiez s'il y a déjà un gagnant
+         // Vérifier qu'aucun gagnant n'a déjà été désigné
          if ($tontine->current_winner_id) {
-             return back()->with('error', 'Un tirage a déjà été effectué pour cette tontine.');
+             return redirect()->route('manager.tontines.show', $tontine)
+                    ->with('error', 'Un tirage a déjà été effectué pour cette tontine');
          }
 
-         // Vérifiez qu'il y a assez de participants
+         // Vérifier le nombre de participants
          if ($tontine->activeParticipants()->count() < 2) {
-             return back()->with('error', 'Pas assez de participants pour effectuer un tirage');
+             return back()->with('error', 'Minimum 2 participants requis');
          }
 
-         // Tirage
+         // Effectuer le tirage
          $winner = $tontine->activeParticipants()->inRandomOrder()->first();
 
-         // Enregistrez le gagnant
-         $tontine->update(['current_winner_id' => $winner->user_id]);
+         // Enregistrer le gagnant
+         $tontine->update([
+             'current_winner_id' => $winner->user_id,
+             'draw_date' => now() // Ajouter la date du tirage
+         ]);
 
-         // Notifications
+         // Envoyer les notifications
          foreach ($tontine->activeParticipants as $participant) {
              Notification::create([
                  'user_id' => $participant->user_id,
                  'type' => 'draw_result',
-                 'title' => 'Résultat du tirage',
+                 'title' => $participant->user_id === $winner->user_id
+                           ? 'Vous avez gagné !'
+                           : 'Résultat du tirage',
                  'message' => $participant->user_id === $winner->user_id
                      ? "Félicitations ! Vous avez gagné le tirage de la tontine {$tontine->name}"
                      : "Le gagnant du tirage de la tontine {$tontine->name} est {$winner->user->name}",
@@ -159,8 +166,22 @@ class TontineController extends Controller
          }
 
          return redirect()->route('manager.tontines.show', $tontine)
-             ->with('success', 'Tirage effectué avec succès !');
+                ->with('success', 'Tirage effectué avec succès !');
      }
+
+        public function showDrawPage(Tontine $tontine)
+    {
+        // Vérifications
+        if ($tontine->manager_id !== auth()->id()) abort(403);
+        if ($tontine->current_winner_id) {
+            return back()->with('error', 'Un tirage a déjà été effectué');
+        }
+        if ($tontine->activeParticipants()->count() < 2) {
+            return back()->with('error', 'Minimum 2 participants requis');
+        }
+
+        return view('manager.tontines.draw', compact('tontine'));
+    }
 
 
 }

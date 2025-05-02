@@ -50,9 +50,13 @@ Route::middleware('auth')->group(function () {
     Route::prefix('manager')->middleware('manager')->group(function () {
         Route::get('dashboard', [ManagerController::class, 'dashboard'])->name('manager.dashboard');
 
-            /// Route pour effectuer un tirage au sort
-    Route::get('tontines/{tontine}/draw', [TontineController::class, 'draw'])
+        // Page de confirmation (affiche draw.blade.php)
+    Route::get('tontines/{tontine}/draw', [TontineController::class, 'showDrawPage'])
     ->name('manager.tontines.draw');
+
+    // Action réelle du tirage (traitement POST)
+    Route::post('tontines/{tontine}/draw', [TontineController::class, 'performDraw'])
+    ->name('manager.tontines.perform-draw');
 
     Route::post('participants', [ManagerController::class, 'storeParticipant'])
         ->name('manager.participants.store');
@@ -71,7 +75,7 @@ Route::middleware('auth')->group(function () {
             'update' => 'manager.tontines.update',
             'destroy' => 'manager.tontines.destroy'
         ]);
-        Route::post('tontines/{tontine}/draw', [TontineController::class, 'drawWinner'])->name('tontines.draw');
+        //Route::post('tontines/{tontine}/draw', [TontineController::class, 'drawWinner'])->name('tontines.draw');
 
         // Gestion des participants
         Route::get('participants', [ManagerController::class, 'participants'])->name('manager.participants.index');
