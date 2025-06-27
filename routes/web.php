@@ -10,6 +10,7 @@ use App\Http\Controllers\TontineController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SuperAdminController;
 use App\Models\User;
 use App\Models\Tontine;
 use App\Models\Participant;
@@ -101,4 +102,24 @@ Route::middleware('auth')->group(function () {
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications');
     Route::post('notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+});
+
+
+// Routes Super Admin
+Route::prefix('admin')->middleware(['auth', 'super_admin'])->group(function () {
+    Route::get('dashboard', [SuperAdminController::class, 'dashboard'])->name('super_admin.dashboard');
+
+    // Gestion des utilisateurs
+    Route::get('users', [SuperAdminController::class, 'users'])->name('super_admin.users');
+    Route::get('users/create', [SuperAdminController::class, 'createUser'])->name('super_admin.users.create');
+    Route::post('users', [SuperAdminController::class, 'storeUser'])->name('super_admin.users.store');
+    Route::get('users/{user}/edit', [SuperAdminController::class, 'editUser'])->name('super_admin.users.edit');
+    Route::put('users/{user}', [SuperAdminController::class, 'updateUser'])->name('super_admin.users.update');
+    Route::delete('users/{user}', [SuperAdminController::class, 'destroyUser'])->name('super_admin.users.destroy');
+
+    // Gestion des tontines
+    Route::get('tontines', [SuperAdminController::class, 'tontines'])->name('super_admin.tontines');
+    Route::get('tontines/{tontine}/edit', [SuperAdminController::class, 'editTontine'])->name('super_admin.tontines.edit');
+    Route::put('tontines/{tontine}', [SuperAdminController::class, 'updateTontine'])->name('super_admin.tontines.update');
+    Route::delete('tontines/{tontine}', [SuperAdminController::class, 'destroyTontine'])->name('super_admin.tontines.destroy');
 });

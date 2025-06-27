@@ -80,6 +80,12 @@ class User extends Authenticatable
     /**
      * Vérifie si l'utilisateur est un gérant
      */
+
+     public function isSuperAdmin()
+    {
+        return $this->role === 'super_admin';
+    }
+
     public function isManager()
     {
         return $this->role === 'manager';

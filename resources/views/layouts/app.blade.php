@@ -51,6 +51,12 @@
                                 <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
                             </a>
 
+                            @if(auth()->user()->isSuperAdmin())
+                                <a href="{{ route('super_admin.dashboard') }}" class="px-3 py-2 rounded hover:bg-blue-700 transition duration-300">
+                                    <i class="fas fa-tachometer-alt mr-1"></i> Super Admin
+                                </a>
+                            @endif
+
                             <!-- Menu spécifique au manager -->
                             @if(auth()->user()->isManager())
                                 <a href="{{ route('manager.tontines.index') }}" class="px-3 py-2 rounded hover:bg-blue-700 transition duration-300">

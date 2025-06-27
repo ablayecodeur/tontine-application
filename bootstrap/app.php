@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'manager' => \App\Http\Middleware\RedirectIfParticipant::class,
             'participant' => \App\Http\Middleware\RedirectIfManager::class,
+            'super_admin' => \App\Http\Middleware\SuperAdminMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
