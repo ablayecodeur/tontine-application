@@ -170,18 +170,44 @@ class TontineController extends Controller
      }
 
         public function showDrawPage(Tontine $tontine)
-    {
-        // Vérifications
-        if ($tontine->manager_id !== auth()->id()) abort(403);
-        if ($tontine->current_winner_id) {
-            return back()->with('error', 'Un tirage a déjà été effectué');
-        }
-        if ($tontine->activeParticipants()->count() < 2) {
-            return back()->with('error', 'Minimum 2 participants requis');
+        {
+            // Vérifications
+            if ($tontine->manager_id !== auth()->id()) abort(403);
+            if ($tontine->current_winner_id) {
+                return back()->with('error', 'Un tirage a déjà été effectué');
+            }
+            if ($tontine->activeParticipants()->count() < 2) {
+                return back()->with('error', 'Minimum 2 participants requis');
+            }
+
+            return view('manager.tontines.draw', compact('tontine'));
         }
 
-        return view('manager.tontines.draw', compact('tontine'));
-    }
+        public function publicIndex(Request $request)
+        {
+            $query = Tontine::where('status', 'active')
+                ->withCount(['participants as active_participants_count' => function($query) {
+                    $query->where('status', 'active');
+                }]);
 
+            // Filtre par recherche
+            if ($request->has('search')) {
+                $query->where('name', 'like', '%'.$request->search.'%');
+            }
+
+            // Filtre par montant
+            if ($request->has('amount')) {
+                $query->orderBy('amount_per_participant', $request->amount);
+            }
+
+            // Filtre par participants
+            if ($request->has('participants')) {
+                $query->orderBy('active_participants_count', $request->participants);
+            }
+
+            $tontines = $query->paginate(9);
+
+            return view('tontines.public-index', compact('tontines'));
+        }
 
 }

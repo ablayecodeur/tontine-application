@@ -29,6 +29,7 @@ use Illuminate\Support\Str;
 
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'accueil'])->name('accueil');
+Route::get('/tontines', [App\Http\Controllers\TontineController::class, 'publicIndex'])->name('tontines.public');
 
 // Routes d'authentification
 Route::middleware('guest')->group(function () {

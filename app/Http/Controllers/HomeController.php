@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Tontine;
 
 class HomeController extends Controller
 {
@@ -20,7 +21,14 @@ class HomeController extends Controller
                 : redirect()->route('participant.dashboard');
         }
 
-        // Sinon, on affiche la page d'accueil
-        return view('accueil');
+        // Récupérer les 3 dernières tontines actives avec le nombre de participants
+        $tontines = Tontine::where('status', 'active')
+        ->withCount('activeParticipants')
+        ->latest()
+        ->take(3)
+        ->get(['id', 'name', 'amount_per_participant', 'image', 'created_at']);
+
+
+        return view('accueil', compact('tontines'));
     }
 }

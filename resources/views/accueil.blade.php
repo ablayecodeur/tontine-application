@@ -833,7 +833,100 @@ footer {
 
 
 
+/* Tontines Section */
+.tontines-section {
+    padding: 5rem 0;
+    background-color: var(--gray-100);
+}
 
+.tontines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.tontine-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tontine-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.tontine-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.tontine-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.tontine-card:hover .tontine-image img {
+    transform: scale(1.05);
+}
+
+.tontine-content {
+    padding: 1.5rem;
+}
+
+.tontine-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-700);
+}
+
+.tontine-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.tontine-amount, .tontine-participants {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-800);
+}
+
+.tontine-cta {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gray-200);
+}
+
+.tontine-cta p {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--gray-800);
+}
+
+.tontine-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .tontine-buttons {
+        flex-direction: column;
+    }
+
+    .tontine-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
 
 
 
@@ -1025,6 +1118,52 @@ footer {
                 <h3 class="feature-title">Accès mobile</h3>
                 <p>Gérez votre tontine depuis n'importe où avec notre interface optimisée pour tous les appareils.</p>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tontines Section -->
+<section id="tontines" class="tontines-section">
+    <div class="container">
+        <h2 class="section-title">Dernières Tontines</h2>
+        <p class="section-subtitle">Rejoignez une communauté en pleine croissance</p>
+
+        <div class="tontines-grid">
+            @foreach($tontines as $tontine)
+            <div class="tontine-card">
+                <div class="tontine-image">
+                    <img src="{{ $tontine->image ?? asset('images/default-tontine.jpg') }}" alt="{{ $tontine->name }}">
+                </div>
+                <div class="tontine-content">
+                    <h3>{{ $tontine->name }}</h3>
+                    <div class="tontine-meta">
+                        <span class="tontine-amount">
+                            <i class="fas fa-money-bill-wave"></i> {{ number_format($tontine->amount_per_participant, 0, ',', ' ') }} FCFA
+                        </span>
+                        <span class="tontine-participants">
+                            <i class="fas fa-users"></i> {{ $tontine->active_participants_count }} participants
+                        </span>
+                    </div>
+                    <div class="tontine-cta">
+                        <p>Connectez-vous pour voir les détails et participer</p>
+                        <div class="tontine-buttons">
+                            <a href="{{ route('login') }}" class="btn btn-outline">
+                                <i class="fas fa-sign-in-alt"></i> Se connecter
+                            </a>
+                            <a href="{{ route('register') }}" class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i> S'inscrire
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="{{ route('tontines.public') }}" class="btn btn-primary px-8 py-3">
+                <i class="fas fa-list mr-2"></i> Voir toutes les tontines
+            </a>
         </div>
     </div>
 </section>

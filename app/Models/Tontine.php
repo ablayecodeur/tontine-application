@@ -60,4 +60,5 @@ class Tontine extends Model
     {
         return $this->hasMany(Round::class);
     }
+
 }
