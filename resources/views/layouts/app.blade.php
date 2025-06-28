@@ -55,6 +55,9 @@
                                 <a href="{{ route('super_admin.dashboard') }}" class="px-3 py-2 rounded hover:bg-blue-700 transition duration-300">
                                     <i class="fas fa-tachometer-alt mr-1"></i> Super Admin
                                 </a>
+                                <a href="{{ route('super_admin.contact_messages') }}" class="px-3 py-2 rounded hover:bg-blue-700 transition duration-300">
+                                    <i class="fas fa-envelope mr-1"></i> Messages
+                                </a>
                             @endif
 
                             <!-- Menu spécifique au manager -->

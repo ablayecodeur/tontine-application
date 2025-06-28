@@ -11,6 +11,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\ContactController;
 use App\Models\User;
 use App\Models\Tontine;
 use App\Models\Participant;
@@ -31,6 +32,7 @@ use Illuminate\Support\Str;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'accueil'])->name('accueil');
 Route::get('/tontines', [App\Http\Controllers\TontineController::class, 'publicIndex'])->name('tontines.public');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 // Routes d'authentification
 Route::middleware('guest')->group(function () {
@@ -122,4 +124,8 @@ Route::prefix('admin')->middleware(['auth', 'super_admin'])->group(function () {
     Route::get('tontines/{tontine}/edit', [SuperAdminController::class, 'editTontine'])->name('super_admin.tontines.edit');
     Route::put('tontines/{tontine}', [SuperAdminController::class, 'updateTontine'])->name('super_admin.tontines.update');
     Route::delete('tontines/{tontine}', [SuperAdminController::class, 'destroyTontine'])->name('super_admin.tontines.destroy');
+
+    Route::get('contact-messages', [SuperAdminController::class, 'contactMessages'])->name('super_admin.contact_messages');
+    Route::get('contact-messages/{message}', [SuperAdminController::class, 'showContactMessage'])->name('super_admin.contact_messages.show');
+    Route::delete('contact-messages/{message}', [SuperAdminController::class, 'destroyContactMessage'])->name('super_admin.contact_messages.destroy');
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Tontine;
+use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller; // ← cette ligne est importante
 
@@ -124,5 +125,27 @@ class SuperAdminController extends Controller
     {
         $tontine->delete();
         return back()->with('success', 'Tontine supprimée');
+    }
+
+    public function contactMessages()
+    {
+        $messages = ContactMessage::latest()->paginate(10);
+        return view('super_admin.contact_messages.index', compact('messages'));
+    }
+
+    public function showContactMessage(ContactMessage $message)
+    {
+        // Marquer comme lu
+        if (!$message->is_read) {
+            $message->update(['is_read' => true]);
+        }
+
+        return view('super_admin.contact_messages.show', compact('message'));
+    }
+
+    public function destroyContactMessage(ContactMessage $message)
+    {
+        $message->delete();
+        return back()->with('success', 'Message supprimé avec succès');
     }
 }

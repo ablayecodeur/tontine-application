@@ -1161,7 +1161,7 @@ footer {
         </div>
 
         <div class="text-center mt-8">
-            <a href="{{ route('tontines.public') }}" class="btn btn-primary px-8 py-3">
+            <a href="{{ route('tontines.public') }}" class="btn btn-primary px-8 py-3" style="margin-top: 2rem; color: var(--gray-800)">
                 <i class="fas fa-list mr-2"></i> Voir toutes les tontines
             </a>
         </div>
@@ -1285,7 +1285,8 @@ footer {
             </div>
 
             <div class="contact-form">
-                <form id="contactForm">
+                <form id="contactForm" action="{{ route('contact.submit') }}" method="POST">
+                    @csrf
                     <div class="form-group">
                         <label for="contact-name">Votre nom</label>
                         <input type="text" id="contact-name" name="name" required>

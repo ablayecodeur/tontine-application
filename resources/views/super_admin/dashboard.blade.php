@@ -26,6 +26,40 @@
             <h3 class="text-gray-500">Tontines actives</h3>
             <p class="text-2xl font-bold">{{ $stats['active_tontines'] }}</p>
         </div>
+        <div class="bg-white p-4 rounded-lg shadow">
+            <h3 class="text-gray-500">Messages non lus</h3>
+            <p class="text-2xl font-bold">{{ App\Models\ContactMessage::where('is_read', false)->count() }}</p>
+            <a href="{{ route('super_admin.contact_messages') }}" class="text-sm text-blue-600 hover:text-blue-800 mt-2 inline-block">
+                Voir tous les messages
+            </a>
+        </div>
+    </div>
+    <!-- Ajoutez une section pour les derniers messages -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Derniers messages</h2>
+
+        @php
+            $recentMessages = App\Models\ContactMessage::latest()->take(5)->get();
+        @endphp
+
+        @if($recentMessages->isEmpty())
+            <p class="text-gray-500">Aucun message récent</p>
+        @else
+            <div class="space-y-4">
+                @foreach($recentMessages as $message)
+                <div class="border-b border-gray-200 pb-4 {{ !$message->is_read ? 'bg-blue-50 p-3 rounded' : '' }}">
+                    <div class="flex justify-between">
+                        <h3 class="font-medium">{{ $message->name }} - {{ $message->subject }}</h3>
+                        <span class="text-sm text-gray-500">{{ $message->created_at->diffForHumans() }}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">{{ Str::limit($message->message, 100) }}</p>
+                    <a href="{{ route('super_admin.contact_messages.show', $message) }}" class="text-sm text-blue-600 hover:text-blue-800 mt-2 inline-block">
+                        Voir le message complet
+                    </a>
+                </div>
+                @endforeach
+            </div>
+        @endif
     </div>
 
     <!-- Liens rapides -->
