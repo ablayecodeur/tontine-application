@@ -101,7 +101,9 @@ class ManagerController extends Controller
             $payment->fill([
                 'status' => 'verified',
                 'verified_by' => auth()->id(),
-                'verified_at' => now()
+                'verified_at' => now(),
+                'amount' => $participant->tontine->amount_per_participant,
+                'method' => $payment->method ?? 'Espèces', // Utilise la méthode existante ou 'cash' par défaut
             ])->save();
 
             // Notification

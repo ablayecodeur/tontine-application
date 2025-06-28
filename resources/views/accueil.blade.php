@@ -160,18 +160,10 @@ header {
     text-align: center;
     color: white;
     padding: 0 2rem;
+    background-size: cover;
+    background-position: center;
 }
 
-.swiper-slide::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(30, 64, 175, 0.8), rgba(30, 58, 138, 0.9));
-    z-index: 1;
-}
 
 .slide-content {
     position: relative;
@@ -179,6 +171,8 @@ header {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.5); /* Assombrissement */
+    border-radius: 0.5rem;
 }
 
 .swiper-slide h1 {
@@ -1012,7 +1006,7 @@ footer {
     <div class="swiper">
         <div class="swiper-wrapper">
             <!-- Slide 1 -->
-            <div class="swiper-slide">
+            <div class="swiper-slide" style="background-image: url('images/img-tontine1.jpg')">
                 <div class="slide-content">
                     <h1>Gérez vos tontines en toute simplicité</h1>
                     <p>TontineManager est la solution complète pour organiser, suivre et gérer vos tontines en ligne, que vous soyez gestionnaire ou participant.</p>
@@ -1028,7 +1022,7 @@ footer {
             </div>
 
             <!-- Slide 2 -->
-            <div class="swiper-slide">
+            <div class="swiper-slide" style="background-image: url('images/img-tontine2.jpg')">
                 <div class="slide-content">
                     <h1>Transparence et sécurité</h1>
                     <p>Suivez chaque contribution en temps réel et assurez-vous que tous les participants respectent leurs engagements.</p>
@@ -1044,7 +1038,7 @@ footer {
             </div>
 
             <!-- Slide 3 -->
-            <div class="swiper-slide">
+            <div class="swiper-slide" style="background-image: url('images/img-tontine3.jpg')">
                 <div class="slide-content">
                     <h1>Notifications intelligentes</h1>
                     <p>Ne manquez plus aucune échéance grâce à nos rappels automatiques et notifications personnalisées.</p>
@@ -1131,9 +1125,6 @@ footer {
         <div class="tontines-grid">
             @foreach($tontines as $tontine)
             <div class="tontine-card">
-                <div class="tontine-image">
-                    <img src="{{ $tontine->image ?? asset('images/default-tontine.jpg') }}" alt="{{ $tontine->name }}">
-                </div>
                 <div class="tontine-content">
                     <h3>{{ $tontine->name }}</h3>
                     <div class="tontine-meta">

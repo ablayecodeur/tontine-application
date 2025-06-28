@@ -59,11 +59,6 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($tontines as $tontine)
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                    <div class="h-48 overflow-hidden">
-                        <img src="{{ $tontine->image ? asset('storage/'.$tontine->image) : asset('images/default-tontine.jpg') }}"
-                             alt="{{ $tontine->name }}"
-                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-                    </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="text-xl font-semibold text-gray-800">{{ $tontine->name }}</h3>
